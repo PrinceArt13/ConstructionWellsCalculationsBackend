@@ -1,17 +1,20 @@
 import { Router } from "express";
 import MortarController from "./controllers/mortarController.js";
+import GNPVController from "./controllers/GNPVController.js";
 
 const router = Router();
 
-router.get("/mixing-mortars", MortarController.MixingMortars);
+router.post("/mixing-mortars", MortarController.MixingMortars);
 
-router.get("/changing-density-by-adding-mortar", MortarController.ChangingDensityByAddingMortar);
+router.post("/changing-density-by-adding-mortar", MortarController.ChangingDensityByAddingMortar);
 
-router.get("/water-quantity-to-decrease-mortar-density", MortarController.WaterQuantityToDecreaseMortarDensity);
+router.post("/water-quantity-to-decrease-mortar-density", MortarController.WaterQuantityToDecreaseMortarDensity);
 
-router.get("/mortar-weightning", MortarController.MortarWeightning);
+router.post("/mortar-weightning", MortarController.MortarWeightning);
 
-router.get("/well-volume", MortarController.WellVolume);
+router.post("/well-volume", MortarController.WellVolume);
+
+router.post("/gnpv", GNPVController.JammingSheet);
 
 export default router;
 

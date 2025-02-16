@@ -1,5 +1,5 @@
 {
-  "openapi":"3.0.0",
+  "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
     "title": "API",
@@ -8,40 +8,50 @@
   "host": "localhost:3000",
   "basePath": "/",
   "schemes": ["http"],
+  "tags": [
+    {
+      "name": "Растворы",
+      "description": "Расчёт растворов"
+    },
+    {
+      "name": "ГНПВ",
+      "description": "Расчёт ГНПВ"
+    }
+  ],
   "paths": {
     "/mixing-mortars": {
-      "get": {
+      "post": {
+        "tags": ["Растворы"],
         "summary": "Смешивание растворов",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "requiredDensity",
-            "required": true,
-            "type": "number",
-            "description": "Необходимая плотность при смешивании растворов (г/см<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "mortarVolume",
-            "required": true,
-            "type": "number",
-            "description": "Исходный объём раствора (м<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "mortarDensity",
-            "required": true,
-            "type": "number",
-            "description": "Плотность исходного раствора (г/см<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "mortarToAddedDensity",
-            "required": true,
-            "type": "number",
-            "description": "Плотность добавляемого раствора (г/см<sup>3</sup>)"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "requiredDensity": {
+                    "type": "number",
+                    "description": "Необходимая плотность при смешивании растворов (г/см<sup>3</sup>)"
+                  },
+                  "mortarVolume": {
+                    "type": "number",
+                    "description": "Исходный объём раствора (м<sup>3</sup>)"
+                  },
+                  "mortarDensity": {
+                    "type": "number",
+                    "description": "Плотность исходного раствора (г/см<sup>3</sup>)"
+                  },
+                  "mortarToAddedDensity": {
+                    "type": "number",
+                    "description": "Плотность добавляемого раствора (г/см<sup>3</sup>)"
+                  }
+                },
+                "required": ["requiredDensity", "mortarVolume", "mortarDensity", "mortarToAddedDensity"]
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful calculation",
@@ -56,7 +66,7 @@
                     },
                     "finalMortarVolume": {
                       "type": "number",
-                      "description":"Конечный объём раствора (м<sup>3</sup>)"
+                      "description": "Конечный объём раствора (м<sup>3</sup>)"
                     }
                   }
                 }
@@ -67,38 +77,38 @@
       }
     },
     "/changing-density-by-adding-mortar": {
-      "get": {
+      "post": {
+        "tags": ["Растворы"],
         "summary": "Изменение плотности при добавлении раствора",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "densityChange",
-            "required": true,
-            "type": "number",
-            "description": "Изменение плотности при добавлении раствора (м<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "mortarToAddedDensity",
-            "required": true,
-            "type": "number",
-            "description": "Плотность добавляемого раствора (г/см<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "mortarVolume",
-            "required": true,
-            "type": "number",
-            "description": "Исходный объём раствора (м<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "mortarDensity",
-            "required": true,
-            "type": "number",
-            "description": "Плотность исходного раствора (г/см<sup>3</sup>)"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "densityChange": {
+                    "type": "number",
+                    "description": "Изменение плотности при добавлении раствора (м<sup>3</sup>)"
+                  },
+                  "mortarToAddedDensity": {
+                    "type": "number",
+                    "description": "Плотность добавляемого раствора (г/см<sup>3</sup>)"
+                  },
+                  "mortarVolume": {
+                    "type": "number",
+                    "description": "Исходный объём раствора (м<sup>3</sup>)"
+                  },
+                  "mortarDensity": {
+                    "type": "number",
+                    "description": "Плотность исходного раствора (г/см<sup>3</sup>)"
+                  }
+                },
+                "required": ["densityChange", "mortarToAddedDensity", "mortarVolume", "mortarDensity"]
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful calculation",
@@ -109,11 +119,11 @@
                   "properties": {
                     "finalMortarVolume": {
                       "type": "number",
-                      "description":"Конечная плотность раствора (г/см<sup>3</sup>)"
+                      "description": "Конечная плотность раствора (г/см<sup>3</sup>)"
                     },
                     "finalMortarDensity": {
                       "type": "number",
-                      "description":"Конечный объём раствора (м<sup>3</sup>)"
+                      "description": "Конечный объём раствора (м<sup>3</sup>)"
                     }
                   }
                 }
@@ -124,31 +134,34 @@
       }
     },
     "/water-quantity-to-decrease-mortar-density": {
-      "get": {
+      "post": {
+        "tags": ["Растворы"],
         "summary": "Количество добавляемой воды для уменьшения плотности раствора",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "requiredDensity",
-            "required": true,
-            "type": "number",
-            "description": "Необходимая плотность при добавлении раствора (г/см<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "wellMortarVolume",
-            "required": true,
-            "type": "number",
-            "description": "Объём раствора в скважине (50 м<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "mortarDensity",
-            "required": true,
-            "type": "number",
-            "description": "Плотность исходного раствора (г/см<sup>3</sup>)"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "requiredDensity": {
+                    "type": "number",
+                    "description": "Необходимая плотность при добавлении раствора (г/см<sup>3</sup>)"
+                  },
+                  "wellMortarVolume": {
+                    "type": "number",
+                    "description": "Объём раствора в скважине (50 м<sup>3</sup>)"
+                  },
+                  "mortarDensity": {
+                    "type": "number",
+                    "description": "Плотность исходного раствора (г/см<sup>3</sup>)"
+                  }
+                },
+                "required": ["requiredDensity", "wellMortarVolume", "mortarDensity"]
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful calculation",
@@ -159,11 +172,11 @@
                   "properties": {
                     "waterVolume": {
                       "type": "number",
-                      "description":"Объём воды (м<sup>3</sup>)"
+                      "description": "Объём воды (м<sup>3</sup>)"
                     },
                     "finalMortarVolume": {
                       "type": "number",
-                      "description":"Конечный объём раствора (м<sup>3</sup>)"
+                      "description": "Конечный объём раствора (м<sup>3</sup>)"
                     }
                   }
                 }
@@ -174,46 +187,38 @@
       }
     },
     "/mortar-weightning": {
-      "get": {
+      "post": {
+        "tags": ["Растворы"],
         "summary": "Утяжеление раствора",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "_requiredDensity",
-            "required": true,
-            "schema": {
-              "type": "number"
-            },
-            "description": "Необходимая плотность при утяжелении раствора (г/см<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "_mortarVolume",
-            "required": true,
-            "schema": {
-              "type": "number"
-            },
-            "description": "Исходный объём раствора (м<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "_mortarDensity",
-            "required": true,
-            "schema": {
-              "type": "number"
-            },
-            "description": "Плотность исходного раствора (г/см<sup>3</sup>)"
-          },
-          {
-            "in": "query",
-            "name": "_weightingAgentSpecificGravity",
-            "required": true,
-            "schema": {
-              "type": "number"
-            },
-            "description": "Удельная вес утяжелителя (г/см<sup>3</sup>)"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_requiredDensity": {
+                    "type": "number",
+                    "description": "Необходимая плотность при утяжелении раствора (г/см<sup>3</sup>)"
+                  },
+                  "_mortarVolume": {
+                    "type": "number",
+                    "description": "Исходный объём раствора (м<sup>3</sup>)"
+                  },
+                  "_mortarDensity": {
+                    "type": "number",
+                    "description": "Плотность исходного раствора (г/см<sup>3</sup>)"
+                  },
+                  "_weightingAgentSpecificGravity": {
+                    "type": "number",
+                    "description": "Удельная вес утяжелителя (г/см<sup>3</sup>)"
+                  }
+                },
+                "required": ["_requiredDensity", "_mortarVolume", "_mortarDensity", "_weightingAgentSpecificGravity"]
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful calculation",
@@ -239,37 +244,34 @@
       }
     },
     "/well-volume": {
-      "get": {
+      "post": {
+        "tags": ["Растворы"],
         "summary": "Объём скважины",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "_OD",
-            "required": false,
-            "schema": {
-              "type": "number"
-            },
-            "description": "Наружный диаметр обсадной колонны или диаметр открытого ствола (мм)"
-          },
-          {
-            "in": "query",
-            "name": "_ID",
-            "required": true,
-            "schema": {
-              "type": "number"
-            },
-            "description": "Внутренний диаметр бурильной колонны (мм)"
-          },
-          {
-            "in": "query",
-            "name": "_Lsec",
-            "required": true,
-            "schema": {
-              "type": "number"
-            },
-            "description": "Длина секции (м)"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "_OD": {
+                    "type": "number",
+                    "description": "Наружный диаметр обсадной колонны или диаметр открытого ствола (мм)"
+                  },
+                  "_ID": {
+                    "type": "number",
+                    "description": "Внутренний диаметр бурильной колонны (мм)"
+                  },
+                  "_Lsec": {
+                    "type": "number",
+                    "description": "Длина секции (м)"
+                  }
+                },
+                "required": ["_ID", "_Lsec"]
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successful calculation",
@@ -302,6 +304,178 @@
           }
         }
       }
+    },
+  "/gnpv": {
+    "post": {
+      "tags": ["ГНПВ"],
+      "summary": "Лист глушения при ГНПВ",
+      "description": "Расчёт параметров для листа глушения при газонефтеводопроявлении (ГНПВ)",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Depth": {
+                  "type": "number",
+                  "description": "Глубина бурения (м)"
+                },
+                "ShoeCasingDepth": {
+                  "type": "number",
+                  "description": "Глубина башмака последней обсадной колонны (м)"
+                },
+                "Time": {
+                  "type": "number",
+                  "description": "Время после закрытия превентора (с)"
+                },
+                "PipePressure": {
+                  "type": "number",
+                  "description": "Давление в трубе (МПа)"
+                },
+                "AnnularPressure": {
+                  "type": "number",
+                  "description": "Затрубное давление (МПа)"
+                },
+                "ReleasedFluidVolume": {
+                  "type": "number",
+                  "description": "Объём вышедшего флюида (м³)"
+                },
+                "CasingDiameter": {
+                  "type": "object",
+                "properties": {
+                  "OuterPipeDiameter": {
+                    "type": "number",
+                    "description": "Наружный диаметр обсадной колонны (мм)"
+                  },
+                  "PipeWallThickness": {
+                    "type": "number",
+                    "description": "Толщина стенки обсадной колонны (мм)"
+                  }
+                }
+              },
+              "OpenBarrelDiameter": {
+                "type": "number",
+                "description": "Диаметр открытого ствола (мм)"
+              },
+              "SDPDiameter": {
+                "type": "object",
+                "properties": {
+                  "SDPOuterDiameter": {
+                    "type": "number",
+                    "description": "Внешний диаметр СБТ (мм)"
+                  },
+                  "SDPInnerDiameter": {
+                    "type": "number",
+                    "description": "Внутренний диаметр СБТ (мм)"
+                  }
+                }
+              },
+              "SDPLength": {
+                "type": "number",
+                "description": "Длина СБТ (м)"
+              },
+              "WDPDiameter": {
+                "type": "object",
+                "properties": {
+                  "WDPOuterDiameter": {
+                    "type": "number",
+                    "description": "Внешний диаметр УДП (мм)"
+                  },
+                  "WDPInnerDiameter": {
+                    "type": "number",
+                    "description": "Внутренний диаметр УДП (мм)"
+                  }
+                }
+              },
+              "WDPLength": {
+                "type": "number",
+                "description": "Длина УДП (м)"
+              },
+              "MortarDensity": {
+                "type": "number",
+                "description": "Плотность раствора (г/см³)"
+              },
+              "HydraulicFracturingGradient": {
+                "type": "number",
+                "description": "Градиент гидроразрыва (МПа/м)"
+              }
+            },
+            "required": [
+              "Depth",
+              "ShoeCasingDepth",
+              "Time",
+              "PipePressure",
+              "AnnularPressure",
+              "ReleasedFluidVolume",
+              "CasingDiameter",
+              "OpenBarrelDiameter",
+              "SDPDiameter",
+              "SDPLength",
+              "WDPDiameter",
+              "WDPLength",
+              "MortarDensity",
+              "HydraulicFracturingGradient"
+            ]
+          }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successful calculation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "pipeVolume": {
+                  "type": "string",
+                  "description": "Объём трубного пространства (м³)"
+                },
+                "annularVolume": {
+                  "type": "string",
+                  "description": "Объём затрубного пространства (м³)"
+                },
+                "totalVolume": {
+                  "type": "string",
+                  "description": "Общий объём скважины (м³)"
+                },
+                "maxPressure": {
+                  "type": "string",
+                  "description": "Максимальное давление в затрубном пространстве (МПа)"
+                },
+                "maxMortarDensity": {
+                  "type": "string",
+                  "description": "Максимальная плотность раствора (г/см³)"
+                },
+                "reservoirPressure": {
+                  "type": "string",
+                  "description": "Пластовое давление (МПа)"
+                },
+                "jammingMortarDensity": {
+                  "type": "string",
+                  "description": "Плотность раствора для глушения (г/см³)"
+                },
+                "totalTime": {
+                  "type": "string",
+                  "description": "Общее время заполнения (мин)"
+                },
+                "totalNumberTurns": {
+                  "type": "string",
+                  "description": "Общее число ходов насоса"
+                },
+                "pressureDrop": {
+                  "type": "string",
+                  "description": "Падение давления на каждые 100 ходов (МПа)"
+                }
+              }
+            }
+          }
+        }
+      }
     }
+  }
+}
   }
 }

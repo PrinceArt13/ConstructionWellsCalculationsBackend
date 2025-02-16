@@ -2,12 +2,29 @@ import express from "express";
 import swaggerUi from "swagger-ui-express";
 import { readFileSync } from "fs";
 import routes from "./routes.js";
+import { MiddleWare } from "./middleware.js";
+import { queryParser } from "express-query-parser";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Загрузка сгенерированной документации
 const swaggerSpec = JSON.parse(readFileSync("./swagger.json", "utf-8"));
+
+// Добавление промежуточного слоя для обработки чисел в запросе
+//app.use(MiddleWare.parseQueryToNumber)
+app.use(express.json());
+
+// Настройка express-query-parser
+app.use(
+    queryParser({
+        parseNull: true,
+        parseUndefined: true,
+        parseBoolean: true,
+        parseNumber: true,
+    })
+);
+
 
 // Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

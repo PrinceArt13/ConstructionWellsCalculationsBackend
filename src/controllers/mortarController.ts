@@ -2,20 +2,16 @@ import { Request, Response } from "express";
 
 class MortarController {
     async MixingMortars(req: Request, res: Response): Promise<void> {
+
         const {
             requiredDensity,
             mortarVolume,
             mortarDensity,
             mortarToAddedDensity
-        } = req.query;
+        } = req.body;
 
-        const requiredDensityNum = parseFloat(requiredDensity as string);
-        const mortarVolumeNum = parseFloat(mortarVolume as string);
-        const mortarDensityNum = parseFloat(mortarDensity as string);
-        const mortarToAddedDensityNum = parseFloat(mortarToAddedDensity as string);
-
-        const mortarToAdd = mortarVolumeNum * (mortarDensityNum - requiredDensityNum) / (requiredDensityNum - mortarToAddedDensityNum);
-        const finalMortarVolume = mortarToAdd + mortarVolumeNum;
+        const mortarToAdd = mortarVolume * (mortarDensity - requiredDensity) / (requiredDensity - mortarToAddedDensity);
+        const finalMortarVolume = mortarToAdd + mortarVolume;
 
         res.status(200).json({
             mortarToAdd: mortarToAdd.toFixed(3),
@@ -29,15 +25,10 @@ class MortarController {
             mortarToAddedDensity,
             mortarVolume,
             mortarDensity
-        } = req.query;
+        } = req.body;
 
-        const densityChangeNum = parseFloat(densityChange as string);
-        const mortarToAddedDensityNum = parseFloat(mortarToAddedDensity as string);
-        const mortarVolumeNum = parseFloat(mortarVolume as string);
-        const mortarDensityNum = parseFloat(mortarDensity as string);
-
-        const finalMortarVolume = densityChangeNum + mortarVolumeNum;
-        const finalMortarDensity = (mortarVolumeNum * mortarDensityNum + densityChangeNum * mortarToAddedDensityNum) / finalMortarVolume;
+        const finalMortarVolume = densityChange + mortarVolume;
+        const finalMortarDensity = (mortarVolume * mortarDensity + densityChange * mortarToAddedDensity) / finalMortarVolume;
 
         res.status(200).json({
             finalMortarDensity: finalMortarDensity.toFixed(3),
@@ -50,14 +41,10 @@ class MortarController {
             requiredDensity,
             wellMortarVolume,
             mortarDensity
-        } = req.query;
+        } = req.body;
 
-        const requiredDensityNum = parseFloat(requiredDensity as string);
-        const wellMortarVolumeNum = parseFloat(wellMortarVolume as string);
-        const mortarDensityNum = parseFloat(mortarDensity as string);
-
-        const waterVolume = (wellMortarVolumeNum * (mortarDensityNum - requiredDensityNum)) / (requiredDensityNum - 1);
-        const finalMortarVolume = waterVolume + wellMortarVolumeNum;
+        const waterVolume = (wellMortarVolume * (mortarDensity - requiredDensity)) / (requiredDensity - 1);
+        const finalMortarVolume = waterVolume + wellMortarVolume;
 
         res.status(200).json({
             waterVolume: waterVolume.toFixed(3),
@@ -71,7 +58,7 @@ class MortarController {
             _mortarVolume,
             _mortarDensity,
             _weightingAgentSpecificGravity
-        } = req.query;
+        } = req.body;
 
         const requiredDensity = parseFloat(_requiredDensity as string);
         const mortarVolume = parseFloat(_mortarVolume as string);
@@ -88,17 +75,11 @@ class MortarController {
     }
 
     async WellVolume(req: Request, res: Response): Promise<void> {
-        const { _OD, _ID, _Lsec } = req.query;
+        let { OD, ID, Lsec } = req.body;
 
-        let OD;
-        if (_OD != null) {
-            OD = parseFloat(_OD as string);
-        }
-        else {
+        if (OD == null) {
             OD = 0;
         }
-        const ID = parseFloat(_ID as string);
-        const Lsec = parseFloat(_Lsec as string);
 
         const liters = 0.785 * (ID ** 2 - OD ** 2) / 10 ** 3;
         const meters = 0.785 * (ID ** 2 - OD ** 2) / 10 ** 6;
