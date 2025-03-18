@@ -2,7 +2,6 @@ import express from "express";
 import swaggerUi from "swagger-ui-express";
 import { readFileSync } from "fs";
 import routes from "./routes.js";
-import { MiddleWare } from "./middleware.js";
 import { queryParser } from "express-query-parser";
 
 const app = express();

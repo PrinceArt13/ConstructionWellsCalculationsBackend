@@ -16,6 +16,10 @@
     {
       "name": "ГНПВ",
       "description": "Расчёт ГНПВ"
+    },
+    {
+      "name":"Цементный мост",
+      "description": "Расчёт цементного моста"
     }
   ],
   "paths": {
@@ -305,7 +309,7 @@
         }
       }
     },
-  "/gnpv": {
+    "/gnpv": {
     "post": {
       "tags": ["ГНПВ"],
       "summary": "Лист глушения при ГНПВ",
@@ -339,7 +343,7 @@
                 },
                 "ReleasedFluidVolume": {
                   "type": "number",
-                  "description": "Объём вышедшего флюида (м³)"
+                  "description": "Объём вышедшего флюида (м<sup>3</sup>)"
                 },
                 "CasingDiameter": {
                   "type": "object",
@@ -394,7 +398,7 @@
               },
               "MortarDensity": {
                 "type": "number",
-                "description": "Плотность раствора (г/см³)"
+                "description": "Плотность раствора (г/см<sup>3</sup>)"
               },
               "HydraulicFracturingGradient": {
                 "type": "number",
@@ -431,15 +435,15 @@
               "properties": {
                 "pipeVolume": {
                   "type": "string",
-                  "description": "Объём трубного пространства (м³)"
+                  "description": "Объём трубного пространства (м<sup>3</sup>)"
                 },
                 "annularVolume": {
                   "type": "string",
-                  "description": "Объём затрубного пространства (м³)"
+                  "description": "Объём затрубного пространства (м<sup>3</sup>)"
                 },
                 "totalVolume": {
                   "type": "string",
-                  "description": "Общий объём скважины (м³)"
+                  "description": "Общий объём скважины (м<sup>3</sup>)"
                 },
                 "maxPressure": {
                   "type": "string",
@@ -447,7 +451,7 @@
                 },
                 "maxMortarDensity": {
                   "type": "string",
-                  "description": "Максимальная плотность раствора (г/см³)"
+                  "description": "Максимальная плотность раствора (г/см<sup>3</sup>)"
                 },
                 "reservoirPressure": {
                   "type": "string",
@@ -455,7 +459,7 @@
                 },
                 "jammingMortarDensity": {
                   "type": "string",
-                  "description": "Плотность раствора для глушения (г/см³)"
+                  "description": "Плотность раствора для глушения (г/см<sup>3</sup>)"
                 },
                 "totalTime": {
                   "type": "string",
@@ -476,6 +480,92 @@
       }
     }
   }
-}
+    },
+    "/cement-bridge-installation": {
+    "post": {
+      "tags": ["Цементный мост"],
+        "summary": "Установка цементного моста",
+        "description": "Расчёт объёмов жидкостей для установки цементного моста",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "BufferFluid": {
+                    "type": "integer",
+                    "description": "Буферная жидкость (0 - отсутствует, 1 - вода)"
+                  },
+                  "PipeType": {
+                    "type": "integer",
+                    "description": "Тип трубы (0 - Трубы с внутрь высаженными концами, 1 - Гладкопроходные трубы)"
+                  },
+                  "CrossSectionArea": {
+                    "type": "number",
+                    "description": "Поперечное сечение скважины на участке установки цементного моста (м<sup>2</sup>)"
+                  },
+                  "RingSpaceArea": {
+                    "type": "number",
+                    "description": "Кольцевое пространство между стенками скважины и колонной труб (м<sup>2</sup>)"
+                  },
+                  "InternalPassageChannelArea": {
+                    "type": "number",
+                    "description": "Внутренний проходной канал колонны труб (м<sup>2</sup>)"
+                  },
+                  "BridgeHeight": {
+                    "type": "number",
+                    "description": "Высота цементного моста (м)"
+                  },
+                  "InternalPipeColumnVolume": {
+                    "type": "number",
+                    "description": "Внутренний объём колонны труб (м<sup>3</sup>)"
+                  }
+                },
+                "required": [
+                  "BufferFluid",
+                  "PipeType",
+                  "CrossSectionArea",
+                  "RingSpaceArea",
+                  "InternalPassageChannelArea",
+                  "BridgeHeight",
+                  "InternalPipeColumnVolume"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful calculation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "PluggingVolume": {
+                      "type": "number",
+                      "description": "Объём тампонажного раствора (м<sup>3</sup>)"
+                    },
+                    "BufferFluidVolume1": {
+                      "type": "number",
+                      "description": "Объём буферной жидкости перед тампонажным раствором (м<sup>3</sup>)"
+                    },
+                    "BufferFluidVolume2": {
+                      "type": "number",
+                      "description": "Объём буферной жидкости после тампонажного раствора (м<sup>3</sup>)"
+                    },
+                    "ChaserVolume": {
+                      "type": "number",
+                      "description": "Объём продавочной жидкости (м<sup>3</sup>)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      } 
+    }
   }
 }
