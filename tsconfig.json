@@ -10,6 +10,31 @@
     "sourceMap": true,
     "allowJs": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/db/dbKnex.ts"],
   "exclude": ["node_modules"]
 }
+// {
+//   "compilerOptions": {
+//     "target": "ES6",
+//     "module": "ESNext",
+//     "moduleResolution": "node",
+//     "outDir": "./dist",
+//     "rootDir": "./src",
+//     "strict": true,
+//     "esModuleInterop": true,
+//     "sourceMap": true,
+//     "allowJs": true
+//   },
+//   "include": ["src/**/*.ts"],
+//   "exclude": ["node_modules"]
+// }
+// {
+//   "compilerOptions": {
+//     "rootDir": "./src",
+//     "outDir": "./dist",
+//     "strict": true,
+//     "module": "ESNext",
+//     "target": "ES6",
+//     "moduleResolution": "node"
+//   }
+// }

@@ -93,12 +93,6 @@ class MortarController {
             volumeSec: volumeSec
         });
     }
-
-    // async mixingMortarsDifferentDensity(req: Request, res: Response): Promise<void> {
-    //     const {
-
-    //     } = req.body
-    // }
 }
 
 export default new MortarController();

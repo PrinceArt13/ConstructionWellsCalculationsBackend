@@ -355,6 +355,18 @@
                   "PipeWallThickness": {
                     "type": "number",
                     "description": "Толщина стенки обсадной колонны (мм)"
+                  },
+                  "ExcessReservoirPressure":{
+                    "type":"number",
+                    "description": "Превышение пластового давления (%)"
+                  },
+                  "PumpSpeed":{
+                    "type":"number",
+                    "description": "Подача насоса (л/с)"
+                  },
+                  "PumpingPerTurn":{
+                    "type":"number",
+                    "description":"Прокачивание литров за один ход для трубного, затрубного и полного объема (л/ход)"
                   }
                 }
               },
@@ -566,6 +578,134 @@
           }
         }
       } 
+    },
+    "/cement-bridge-installation-on-balance": {
+      "post": {
+        "tags": ["Цементный мост"],
+        "summary": "Расчёт параметров установки цементного моста с учётом балансировки",
+        "description": "Рассчёт количество цемента, объёмы буферов и продавки для установки цементного моста.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cementBridgeHeight": {
+                    "type": "number",
+                    "description": "Длина цементного моста (м)"
+                  },
+                  "runningVolumeCasingString": {
+                    "type": "number",
+                    "description": "Погонный объём открытого ствола или обсадной колонны (м<sup>3</sup>/м)"
+                  },
+                  "excessVolume": {
+                    "type": "number",
+                    "description": "Избыточный объём для работы по цементированию (%)"
+                  },
+                  "buffer1Volume": {
+                    "type": "number",
+                    "description": "Объём буфера, закачиваемый перед цементным мостом (м<sup>3</sup>)"
+                  },
+                  "runningCapacityRing": {
+                    "type": "number",
+                    "description": "Погонная вместимость кольца между скважиной и колонной (м<sup>3</sup>/м)"
+                  },
+                  "runningVolumeInnerPipe": {
+                    "type": "number",
+                    "description": "Погонный объём внутренней полости трубы (м<sup>3</sup>/м)"
+                  },
+                  "drillPipeLength": {
+                    "type": "number",
+                    "description": "Длина бурильных труб или НКТ - насосно-компрессорные трубы (м)"
+                  }
+                },
+                "required": [
+                  "cementBridgeHeight",
+                  "runningVolumeCasingString",
+                  "excessVolume",
+                  "buffer1Volume",
+                  "runningCapacityRing",
+                  "runningVolumeInnerPipe",
+                  "drillPipeLength"
+                ]
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful calculation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "requiredCementCount": {
+                        "type": "string",
+                        "description": "Количество цемента, требующееся для заданной длины цементного моста (м<sup>3</sup>)"
+                      },
+                      "buffer2Volume": {
+                        "type": "string",
+                        "description": "Объём буфера, закачиваемый после цементного моста (м<sup>3</sup>)"
+                      },
+                      "salesVolume": {
+                        "type": "string",
+                        "description": "Объём продавки, требующийся для размещения моста (барр)"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-constants": {
+      "get": {
+        "tags": ["БД"],
+        "summary": "Получение списка констант",
+        "description": "Этот эндпоинт возвращает список всех констант из базы данных, используемых в расчётах.",
+        "responses": {
+          "200": {
+            "description": "Constants retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "constants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "Уникальный идентификатор константы"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Название константы"
+                          },
+                          "value": {
+                            "type": "number",
+                            "description": "Значение константы"
+                          },
+                          "unit": {
+                            "type": "string",
+                            "description": "Единица измерения"
+                          }
+                        }
+                      },
+                      "description": "Список констант"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

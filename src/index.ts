@@ -1,5 +1,5 @@
 import express from "express";
-import swaggerUi from "swagger-ui-express";
+import * as swaggerUi from "swagger-ui-express";
 import { readFileSync } from "fs";
 import routes from "./routes.js";
 import { queryParser } from "express-query-parser";
@@ -10,8 +10,6 @@ const PORT = process.env.PORT || 3000;
 // Загрузка сгенерированной документации
 const swaggerSpec = JSON.parse(readFileSync("./swagger.json", "utf-8"));
 
-// Добавление промежуточного слоя для обработки чисел в запросе
-//app.use(MiddleWare.parseQueryToNumber)
 app.use(express.json());
 
 // Настройка express-query-parser

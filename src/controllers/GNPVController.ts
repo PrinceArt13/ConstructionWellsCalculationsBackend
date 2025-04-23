@@ -1,4 +1,6 @@
 import { Request, Response } from 'express'
+import { db } from '../db/dbKysely.js';
+import { Constants } from '../db/schema.js';
 
 // ГНПВ - газонефтеводопроявление
 class GNPVController {
@@ -30,8 +32,13 @@ class GNPVController {
             }, //Диаметр УДП (мм)
             WDPLength, //Длина УДП (м)
             MortarDensity, //Плотность раствора (г/см^3)
-            HydraulicFracturingGradient //Градиент гидроразрыва (МПа/м)
+            HydraulicFracturingGradient, //Градиент гидроразрыва (МПа/м)
+            ExcessReservoirPressure, // Превышение пластового давления (%)
+            PumpSpeed, // Подача насоса (л/с)
+            PumpingPerTurn // (л/ход)
         } = req.body;
+
+        const constants = await db.selectFrom('constants').selectAll().execute();
 
         const SDPOD = SDPOuterDiameter / 1000;
         const SDPID = SDPInnerDiameter / 1000;
@@ -60,13 +67,10 @@ class GNPVController {
         // 2. Максимальное давление в затрубном пространстве 
         // (не должна превышать разницу между максимальным давлением гидроразрыва пород и давлением столба жидкости бурового раствора под башмаком последней обсадной колонны)
         // ... и максимальная допустимая плотность бурового раствора
-        const ro = 1.3
-        const g = 0.00981
+        const ro = parseFloat(constants.find((x) => x.name === 'ro')?.value);
+        const g = parseFloat(constants.find((x) => x.name === 'g')?.value); //ускорение свободного падения
 
         const MaxPressure = HydraulicFracturingGradient * ShoeCasingDepth - ro * g * ShoeCasingDepth;
-
-        // ??? почему 1,3 и 0.00981 где их брать
-        // ??? нужно ли проверять входит ли число в диапазон? а если не входит?
 
         const MaxMortarDensity = HydraulicFracturingGradient / g
 
@@ -75,14 +79,9 @@ class GNPVController {
 
         // 4. Плотность раствора
 
-        // ??? в расчёте сказано про превыение пластового давления, какое условие тут проверять? поставил 1.07, как-будто среднее между 10 и 5 %
-
-        const JammingMortarDensity = (ReservoirPressure + MortarDensity * 1.07) / (g * Depth);
+        const JammingMortarDensity = (ReservoirPressure + MortarDensity * (1 + ExcessReservoirPressure / 100)) / (g * Depth);
 
         // 5. Расчёт времени
-
-        // ??? подача насоса откуда брать? 11,9 л/c
-        const PumpSpeed = 11.9
 
         const PipeTime = (PipeVolume * 1000) / (PumpSpeed * 60);
         const AnnularTime = (AnnularVolume * 1000) / (PumpSpeed * 60);
@@ -90,19 +89,11 @@ class GNPVController {
 
         // 6. Число ходов бурового насоса
 
-        // ??? прокачивание 15,9л за один ход, почему столько?
-
-        const PumpingPerTurn = 15.9
-
         const NumberTurnsPipe = (PipeVolume * 1000) / PumpingPerTurn;
         const NumberTurnsAnnular = (AnnularVolume * 1000) / PumpingPerTurn;
         const TotalNumberTurns = NumberTurnsAnnular + NumberTurnsPipe;
 
         // 7. Падение давления на каждые 100 ходов
-
-        // ??? не понимаю почему график строится не при любых случаях
-        // ??? как понять что конечное а что начально, почему просто нельзя взять наименьшее P?
-
 
         const PressureDrop = (((AnnularPressure + PipePressure) - AnnularPressure) * 100) / NumberTurnsPipe;
 

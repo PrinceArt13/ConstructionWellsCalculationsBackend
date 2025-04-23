@@ -71,7 +71,7 @@ class cementBridgeController {
         });
     }
 
-    async cementBridgeInstallationOnBalance(req: Request, res: Response): Promise<void> { //точно то? не сходится страница с пунктом
+    async cementBridgeInstallationOnBalance(req: Request, res: Response): Promise<void> {
         const {
             cementBridgeHeight, // Длина цементного моста (м)
             runningVolumeCasingString, // Погонный объём открытого ствола или обсадной колонны (м^3/м)

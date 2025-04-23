@@ -2,8 +2,11 @@ import { Router } from "express";
 import MortarController from "./controllers/mortarController.js";
 import GNPVController from "./controllers/GNPVController.js";
 import cementBridgeController from "./controllers/cementBridgeController.js";
+import dbController from "./controllers/dbController.js";
 
 const router = Router();
+
+router.get("/get-constants", dbController.getConstants);
 
 router.post("/mixing-mortars", MortarController.MixingMortars);
 
