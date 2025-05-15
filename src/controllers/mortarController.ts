@@ -75,15 +75,15 @@ class MortarController {
     }
 
     async WellVolume(req: Request, res: Response): Promise<void> {
-        let { OD, ID, Lsec } = req.body;
+        let { _OD, _ID, _Lsec } = req.body;
 
-        if (OD == null) {
-            OD = 0;
+        if (_OD == null) {
+            _OD = 0;
         }
 
-        const liters = 0.785 * (ID ** 2 - OD ** 2) / 10 ** 3;
-        const meters = 0.785 * (ID ** 2 - OD ** 2) / 10 ** 6;
-        const volumeSec = 0.785 * ID ** 2 * Lsec / 10 ** 3;
+        const liters = 0.785 * (_ID ** 2 - _OD ** 2) / 10 ** 3;
+        const meters = 0.785 * (_ID ** 2 - _OD ** 2) / 10 ** 6;
+        const volumeSec = 0.785 * _ID ** 2 * _Lsec / 10 ** 3;
 
         res.status(200).json({
             capacity: {

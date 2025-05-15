@@ -631,27 +631,27 @@
                 ]
               }
             }
-          },
-          "responses": {
-            "200": {
-              "description": "Successful calculation",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "requiredCementCount": {
-                        "type": "string",
-                        "description": "Количество цемента, требующееся для заданной длины цементного моста (м<sup>3</sup>)"
-                      },
-                      "buffer2Volume": {
-                        "type": "string",
-                        "description": "Объём буфера, закачиваемый после цементного моста (м<sup>3</sup>)"
-                      },
-                      "salesVolume": {
-                        "type": "string",
-                        "description": "Объём продавки, требующийся для размещения моста (барр)"
-                      }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful calculation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "requiredCementCount": {
+                      "type": "number",
+                      "description": "Количество цемента, требующееся для заданной длины цементного моста (м<sup>3</sup>)"
+                    },
+                    "buffer2Volume": {
+                      "type": "number",
+                      "description": "Объём буфера, закачиваемый после цементного моста (м<sup>3</sup>)"
+                    },
+                    "salesVolume": {
+                      "type": "number",
+                      "description": "Объём продавки, требующийся для размещения моста (барр)"
                     }
                   }
                 }
@@ -704,6 +704,69 @@
               }
             }
           }
+        }
+      }
+    },
+    "/frontend-method/{methodName}": {
+      "get": {
+          "tags": ["Frontend"],          
+          "summary": "Получить информацию о методе по названию",
+          "description": "Возвращает название, описание и формулу в формате LaTeX по имени метода",
+          "parameters": [
+            {
+              "name": "methodName",
+              "in": "path",
+              "description": "Название метода, например `/mixing-mortars`",
+              "required": true,
+              "schema": {
+                  "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+                "description": "Успешный запрос",
+              "content": {
+                "application/json": {
+                  "schema": {
+                      "type": "object",
+                    "properties": {
+                      "name": {
+                          "type": "string",
+                          "example": "/mixing-mortars",
+                          "description": "Название метода"
+                      },
+                      "information": {
+                          "type": "string",
+                          "example": "Расчёт необходимого объёма добавляемого раствора для достижения нужной плотности",
+                          "description": "Краткое описание метода"
+                      },
+                      "latex": {
+                          "type": "string",
+                          "example": "\\section*{Смешивание растворов}...[LaTeX]",
+                          "description": "Формулы в формате LaTeX"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+                "description": "Метод не найден",
+              "content": {
+                "application/json": {
+                  "schema": {
+                      "type": "object",
+                    "properties": {
+                      "error": {
+                          "type": "string",
+                          "example": "Метод не найден"
+                      }
+                    }
+                  }
+                }
+              }
+            }
         }
       }
     }

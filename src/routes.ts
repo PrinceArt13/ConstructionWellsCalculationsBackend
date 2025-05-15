@@ -1,12 +1,15 @@
 import { Router } from "express";
-import MortarController from "./controllers/mortarController.js";
-import GNPVController from "./controllers/GNPVController.js";
-import cementBridgeController from "./controllers/cementBridgeController.js";
-import dbController from "./controllers/dbController.js";
+import MortarController from "./controllers/mortarController";
+import GNPVController from "./controllers/GNPVController";
+import cementBridgeController from "./controllers/cementBridgeController";
+import dbController from "./controllers/dbController";
+import frontendController from "./controllers/frontendController";
 
 const router = Router();
 
 router.get("/get-constants", dbController.getConstants);
+
+router.get("/frontend-method/:methodName", frontendController.frontendMethod)
 
 router.post("/mixing-mortars", MortarController.MixingMortars);
 

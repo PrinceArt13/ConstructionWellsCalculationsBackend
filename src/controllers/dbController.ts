@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { db } from "../db/dbKysely.js";
+import { db } from "../db/dbKysely";
 
 class dbController {
     async getConstants(req: Request, res: Response): Promise<void> {

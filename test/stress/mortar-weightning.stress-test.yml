@@ -1,0 +1,18 @@
+config:
+  target: "http://localhost:3001"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+      name: "Утяжеление раствора"
+
+scenarios:
+  - flow:
+      - post:
+          url: "/mortar-weightning"
+          headers:
+            Content-Type: "application/json"
+          json:
+            _requiredDensity: 1.8
+            _mortarVolume: 10
+            _mortarDensity: 1.2
+            _weightingAgentSpecificGravity: 4.5

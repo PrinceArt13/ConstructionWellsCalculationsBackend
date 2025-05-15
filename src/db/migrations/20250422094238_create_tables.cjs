@@ -1,9 +1,9 @@
 exports.up = function (knex) {
     return knex.schema.createTable('constants', (table) => {
       table.increments('id').primary();
-      table.string('name', 255).notNullable();
-      table.decimal('value', 10, 4).notNullable();
-      table.text('unit').notNullable();
+      table.string('name', 255).notNullable(); // название константы
+      table.decimal('value', 10, 4).notNullable(); // значение
+      table.text('unit').notNullable(); // единица измерения
     });
   };
   

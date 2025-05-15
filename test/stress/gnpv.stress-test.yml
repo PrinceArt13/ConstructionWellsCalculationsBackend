@@ -1,0 +1,37 @@
+config:
+  target: "http://localhost:3001"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+      name: "Нагрузка на /gnpv"
+
+scenarios:
+  - flow:
+      - post:
+          url: "/gnpv"
+          headers:
+            Content-Type: "application/json"
+          json:
+            Depth: 2000
+            ShoeCasingDepth: 1500
+            Time: 120
+            PipePressure: 15
+            AnnularPressure: 18
+            ReleasedFluidVolume: 5
+            CasingDiameter:
+              OuterPipeDiameter: 146
+              PipeWallThickness: 10
+              ExcessReservoirPressure: 10
+              PumpSpeed: 20
+              PumpingPerTurn: 10
+            OpenBarrelDiameter: 190
+            SDPDiameter:
+              SDPOuterDiameter: 73
+              SDPInnerDiameter: 60
+            SDPLength: 1000
+            WDPDiameter:
+              WDPOuterDiameter: 89
+              WDPInnerDiameter: 75
+            WDPLength: 2000
+            MortarDensity: 1.2
+            HydraulicFracturingGradient: 0.018

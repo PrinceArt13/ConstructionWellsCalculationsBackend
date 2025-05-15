@@ -1,0 +1,21 @@
+config:
+  target: "http://localhost:3001"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+      name: "Нагрузка на /cement-bridge-installation-on-balance"
+
+scenarios:
+  - flow:
+      - post:
+          url: "/cement-bridge-installation-on-balance"
+          headers:
+            Content-Type: "application/json"
+          json:
+            cementBridgeHeight: 10
+            runningVolumeCasingString: 0.6
+            excessVolume: 10
+            buffer1Volume: 5
+            runningCapacityRing: 0.05
+            runningVolumeInnerPipe: 0.4
+            drillPipeLength: 100

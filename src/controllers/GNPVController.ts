@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { db } from '../db/dbKysely.js';
-import { Constants } from '../db/schema.js';
+import { db, closeDatabaseConnection } from '../db/dbKysely';
+import { Constants } from '../db/schema';
 
 // ГНПВ - газонефтеводопроявление
 class GNPVController {
@@ -15,7 +15,10 @@ class GNPVController {
             ReleasedFluidVolume, //Объём вышедшего флюида (м^3)
             CasingDiameter: {
                 OuterPipeDiameter, // Внутренний диаметр трубы (мм)
-                PipeWallThickness // Толщина стенки трубы (мм)
+                PipeWallThickness, // Толщина стенки трубы (мм)
+                ExcessReservoirPressure, // Превышение пластового давления (%)
+                PumpSpeed, // Подача насоса (л/с)
+                PumpingPerTurn // (л/ход)
             }, //Диаметр обсадной колонны (мм)
             OpenBarrelDiameter, //Диаметр открытого ствола (мм)
             //Стальная Бурильная Труба - универсальная труба для бурения\\
@@ -33,9 +36,6 @@ class GNPVController {
             WDPLength, //Длина УДП (м)
             MortarDensity, //Плотность раствора (г/см^3)
             HydraulicFracturingGradient, //Градиент гидроразрыва (МПа/м)
-            ExcessReservoirPressure, // Превышение пластового давления (%)
-            PumpSpeed, // Подача насоса (л/с)
-            PumpingPerTurn // (л/ход)
         } = req.body;
 
         const constants = await db.selectFrom('constants').selectAll().execute();

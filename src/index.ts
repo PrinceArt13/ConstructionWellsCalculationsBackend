@@ -1,11 +1,11 @@
 import express from "express";
 import * as swaggerUi from "swagger-ui-express";
 import { readFileSync } from "fs";
-import routes from "./routes.js";
+import routes from "./routes";
 import { queryParser } from "express-query-parser";
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+export const app = express();
+const PORT = process.env.PORT || 3001;
 
 // Загрузка сгенерированной документации
 const swaggerSpec = JSON.parse(readFileSync("./swagger.json", "utf-8"));

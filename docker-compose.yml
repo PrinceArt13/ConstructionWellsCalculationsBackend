@@ -1,36 +1,37 @@
 version: "3.8"
-
 services:
   app:
+    image: princeart13/calculator_app
+    container_name: calculator_app
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: calculator_app
-    restart: always
+    ports:
+      - "3000:3000"
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: user
       DB_PASSWORD: password
       DB_NAME: calculator_db
-    ports:
-      - "3000:3000"
+      PORT: 3000
     depends_on:
       - db
+    restart: unless-stopped
 
   db:
     image: postgres:15-alpine
     container_name: calculator_db
-    restart: always
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: calculator_db
-    ports:
-      - "5432:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
 
 volumes:
-  db_data:
+  pg_data:

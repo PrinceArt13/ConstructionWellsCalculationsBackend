@@ -1,0 +1,18 @@
+config:
+  target: "http://localhost:3001"
+  phases:
+    - duration: 60
+      arrivalRate: 100
+      name: "Нагрузка на изменение плотности"
+
+scenarios:
+  - flow:
+      - post:
+          url: "/changing-density-by-adding-mortar"
+          headers:
+            Content-Type: "application/json"
+          json:
+            densityChange: 0.3
+            mortarToAddedDensity: 1.8
+            mortarVolume: 10
+            mortarDensity: 1.2
