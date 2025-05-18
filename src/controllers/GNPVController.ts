@@ -97,20 +97,57 @@ class GNPVController {
 
         const PressureDrop = (((AnnularPressure + PipePressure) - AnnularPressure) * 100) / NumberTurnsPipe;
 
-        res.status(200).json({
-            pipeVolume: PipeVolume.toFixed(3), // Объём трубного пространства (м^3)
-            annularVolume: AnnularVolume.toFixed(3), // Объём затрубного пространства (м^3)
-            totalVolume: TotalVolume.toFixed(3), // Общий объём скважины (м^3)
-            maxPressure: MaxPressure.toFixed(3), // Максимальное давление в затрубном пространстве (МПа)
-            maxMortarDensity: MaxMortarDensity.toFixed(3), // Максимальная плотность раствора (г/см^3)
-            reservoirPressure: ReservoirPressure.toFixed(3), // Пластовое давление (МПа)
-            jammingMortarDensity: JammingMortarDensity.toFixed(3), // Плотность раствора для глушения (г/см^3)
-            totalTime: TotalTime.toFixed(2), // Общее время заполнения (мин)
-            totalNumberTurns: TotalNumberTurns.toFixed(0), // Общее число ходов насоса
-            pressureDrop: PressureDrop.toFixed(3) // Падение давления на каждые 100 ходов (МПа)
-        });
-    }
+        if (!isFinite(PipeVolume) || isNaN(PipeVolume) || PipeVolume < 0
+            ||
+            !isFinite(AnnularVolume) || isNaN(AnnularVolume) || AnnularVolume < 0
+            ||
+            !isFinite(TotalVolume) || isNaN(TotalVolume) || TotalVolume < 0
+            ||
+            !isFinite(MaxPressure) || isNaN(MaxPressure) || MaxPressure < 0
+            ||
+            !isFinite(MaxMortarDensity) || isNaN(MaxMortarDensity) || MaxMortarDensity < 0
+            ||
+            !isFinite(ReservoirPressure) || isNaN(ReservoirPressure) || ReservoirPressure < 0
+            ||
+            !isFinite(JammingMortarDensity) || isNaN(JammingMortarDensity) || JammingMortarDensity < 0
+            ||
+            !isFinite(TotalTime) || isNaN(TotalTime) || TotalTime < 0
+            ||
+            !isFinite(TotalNumberTurns) || isNaN(TotalNumberTurns) || TotalNumberTurns < 0
+            ||
+            !isFinite(PressureDrop) || isNaN(PressureDrop) || PressureDrop < 0) {
+            res.status(400).json({
+                error: 'Некорректный результат расчёта',
+                details: {
+                    pipeVolume: PipeVolume, // Объём трубного пространства (м^3)
+                    annularVolume: AnnularVolume, // Объём затрубного пространства (м^3)
+                    totalVolume: TotalVolume, // Общий объём скважины (м^3)
+                    maxPressure: MaxPressure, // Максимальное давление в затрубном пространстве (МПа)
+                    maxMortarDensity: MaxMortarDensity,// Максимальная плотность раствора (г/см^3)
+                    reservoirPressure: ReservoirPressure, // Пластовое давление (МПа)
+                    jammingMortarDensity: JammingMortarDensity, // Плотность раствора для глушения (г/см^3)
+                    totalTime: TotalTime, // Общее время заполнения (мин)
+                    totalNumberTurns: TotalNumberTurns, // Общее число ходов насоса
+                    pressureDrop: PressureDrop // Падение давления на каждые 100 ходов (МПа)
+                }
+            });
+            return;
+        }
 
+        res.status(200).json({
+            pipeVolume: Number(PipeVolume.toFixed(3)), // Объём трубного пространства (м^3)
+            annularVolume: Number(AnnularVolume.toFixed(3)), // Объём затрубного пространства (м^3)
+            totalVolume: Number(TotalVolume.toFixed(3)), // Общий объём скважины (м^3)
+            maxPressure: Number(MaxPressure.toFixed(3)), // Максимальное давление в затрубном пространстве (МПа)
+            maxMortarDensity: Number(MaxMortarDensity.toFixed(3)), // Максимальная плотность раствора (г/см^3)
+            reservoirPressure: Number(ReservoirPressure.toFixed(3)), // Пластовое давление (МПа)
+            jammingMortarDensity: Number(JammingMortarDensity.toFixed(3)), // Плотность раствора для глушения (г/см^3)
+            totalTime: Number(TotalTime.toFixed(2)), // Общее время заполнения (мин)
+            totalNumberTurns: Number(TotalNumberTurns.toFixed(0)), // Общее число ходов насоса
+            pressureDrop: Number(PressureDrop.toFixed(3)) // Падение давления на каждые 100 ходов (МПа)
+        });
+        return;
+    }
 }
 
 export default new GNPVController();

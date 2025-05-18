@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "jest",
-    "test:integration": "jest test/integration",
+    "test:integration": "jest test/integration/general-integration/general-integration.test.ts",
     "start": "node src/index.ts",
     "dev": "nodemon --watch src --exec \"npx ts-node\" src/index.ts",
     "build": "tsc",

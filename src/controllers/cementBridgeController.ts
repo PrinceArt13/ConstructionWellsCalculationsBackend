@@ -61,14 +61,32 @@ class cementBridgeController {
         const ChaserVolume = k4 * InternalPipeColumnVolume - InternalPassageChannelArea * BridgeHeight;
 
 
-        // todo: ещё какойто расчёт через резерв
+        if (!isFinite(PluggingVolume) || isNaN(PluggingVolume) || PluggingVolume < 0
+            ||
+            !isFinite(BufferFluidVolume1) || isNaN(BufferFluidVolume1) || BufferFluidVolume1 < 0
+            ||
+            !isFinite(BufferFluidVolume2) || isNaN(BufferFluidVolume2) || BufferFluidVolume2 < 0
+            ||
+            !isFinite(ChaserVolume) || isNaN(ChaserVolume) || ChaserVolume < 0) {
+            res.status(400).json({
+                error: 'Некорректный результат расчёта',
+                details: {
+                    PluggingVolume: PluggingVolume,
+                    BufferFluidVolume1: BufferFluidVolume1,
+                    BufferFluidVolume2: BufferFluidVolume2,
+                    ChaserVolume: ChaserVolume
+                }
+            });
+            return;
+        }
 
         res.status(200).json({
-            PluggingVolume: PluggingVolume.toFixed(3),
-            BufferFluidVolume1: BufferFluidVolume1.toFixed(3),
-            BufferFluidVolume2: BufferFluidVolume2.toFixed(3),
-            ChaserVolume: ChaserVolume.toFixed(3)
+            PluggingVolume: Number(PluggingVolume.toFixed(3)),
+            BufferFluidVolume1: Number(BufferFluidVolume1.toFixed(3)),
+            BufferFluidVolume2: Number(BufferFluidVolume2.toFixed(3)),
+            ChaserVolume: Number(ChaserVolume.toFixed(3))
         });
+        return;
     }
 
     async cementBridgeInstallationOnBalance(req: Request, res: Response): Promise<void> {
@@ -89,13 +107,28 @@ class cementBridgeController {
         const buffer2Volume = (runningCapacityRing / (1 + excessVolume / 100)) * buffer1Volume * runningVolumeInnerPipe; // Объём буфера, закачиваемый после цементного моста (м^3)
         const salesVolume = (drillPipeLength - cementBridgeHeight) * runningVolumeInnerPipe - buffer2Volume; // Объём продавки, требующийся для размещения моста (барр)
 
-        //todo: добавить в свагер 
-        // и визуализировать расчеты в виде изображения, с указания интервалов буфера, цементного моста. Интервалов перфорации и конструкции скважины
+        if (!isFinite(requiredCementCount) || isNaN(requiredCementCount) || requiredCementCount < 0
+            ||
+            !isFinite(buffer2Volume) || isNaN(buffer2Volume) || buffer2Volume < 0
+            ||
+            !isFinite(salesVolume) || isNaN(salesVolume) || salesVolume < 0) {
+            res.status(400).json({
+                error: 'Некорректный результат расчёта',
+                details: {
+                    requiredCementCount: requiredCementCount,
+                    buffer2Volume: buffer2Volume,
+                    salesVolume: salesVolume,
+                }
+            });
+            return;
+        }
+
         res.status(200).json({
-            requiredCementCount: requiredCementCount.toFixed(3),
-            buffer2Volume: buffer2Volume.toFixed(3),
-            salesVolume: salesVolume.toFixed(3),
+            requiredCementCount: Number(requiredCementCount.toFixed(3)),
+            buffer2Volume: Number(buffer2Volume.toFixed(3)),
+            salesVolume: Number(salesVolume.toFixed(3)),
         });
+        return;
     }
 }
 

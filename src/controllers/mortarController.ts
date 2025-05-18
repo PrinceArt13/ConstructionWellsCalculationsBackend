@@ -13,10 +13,24 @@ class MortarController {
         const mortarToAdd = mortarVolume * (mortarDensity - requiredDensity) / (requiredDensity - mortarToAddedDensity);
         const finalMortarVolume = mortarToAdd + mortarVolume;
 
+        if (!isFinite(mortarToAdd) || isNaN(mortarToAdd) || mortarToAdd < 0
+            ||
+            !isFinite(finalMortarVolume) || isNaN(finalMortarVolume) || finalMortarVolume < 0) {
+            res.status(400).json({
+                error: 'Некорректный результат расчёта',
+                details: {
+                    mortarToAdd: mortarToAdd,
+                    finalMortarVolume: finalMortarVolume
+                }
+            });
+            return;
+        }
+
         res.status(200).json({
-            mortarToAdd: mortarToAdd.toFixed(3),
-            finalMortarVolume: finalMortarVolume.toFixed(3)
+            mortarToAdd: Number(mortarToAdd.toFixed(3)),
+            finalMortarVolume: Number(finalMortarVolume.toFixed(3))
         });
+        return;
     }
 
     async ChangingDensityByAddingMortar(req: Request, res: Response): Promise<void> {
@@ -30,10 +44,24 @@ class MortarController {
         const finalMortarVolume = densityChange + mortarVolume;
         const finalMortarDensity = (mortarVolume * mortarDensity + densityChange * mortarToAddedDensity) / finalMortarVolume;
 
+        if (!isFinite(finalMortarDensity) || isNaN(finalMortarDensity) || finalMortarDensity < 0
+            ||
+            !isFinite(finalMortarVolume) || isNaN(finalMortarVolume) || finalMortarVolume < 0) {
+            res.status(400).json({
+                error: 'Некорректный результат расчёта',
+                details: {
+                    finalMortarDensity: finalMortarDensity,
+                    finalMortarVolume: finalMortarVolume
+                }
+            });
+            return;
+        }
+
         res.status(200).json({
-            finalMortarDensity: finalMortarDensity.toFixed(3),
-            finalMortarVolume: finalMortarVolume.toFixed(3)
+            finalMortarDensity: Number(finalMortarDensity.toFixed(3)),
+            finalMortarVolume: Number(finalMortarVolume.toFixed(3))
         });
+        return;
     }
 
     async WaterQuantityToDecreaseMortarDensity(req: Request, res: Response): Promise<void> {
@@ -46,10 +74,24 @@ class MortarController {
         const waterVolume = (wellMortarVolume * (mortarDensity - requiredDensity)) / (requiredDensity - 1);
         const finalMortarVolume = waterVolume + wellMortarVolume;
 
+        if (!isFinite(waterVolume) || isNaN(waterVolume) || waterVolume < 0
+            ||
+            !isFinite(finalMortarVolume) || isNaN(finalMortarVolume) || finalMortarVolume < 0) {
+            res.status(400).json({
+                error: 'Некорректный результат расчёта',
+                details: {
+                    waterVolume: waterVolume,
+                    finalMortarVolume: finalMortarVolume
+                }
+            });
+            return;
+        }
+
         res.status(200).json({
-            waterVolume: waterVolume.toFixed(3),
-            finalMortarVolume: finalMortarVolume.toFixed(3)
+            waterVolume: Number(waterVolume.toFixed(3)),
+            finalMortarVolume: Number(finalMortarVolume.toFixed(3))
         });
+        return;
     }
 
     async MortarWeightning(req: Request, res: Response): Promise<void> {
@@ -68,10 +110,24 @@ class MortarController {
         const weightingAgentWeight = (weightingAgentSpecificGravity * 1000 * (requiredDensity - mortarDensity) * mortarVolume) / (weightingAgentSpecificGravity - requiredDensity);
         const finalMortarVolume = weightingAgentWeight / (weightingAgentSpecificGravity * 1000) + mortarVolume;
 
+        if (!isFinite(weightingAgentWeight) || isNaN(weightingAgentWeight) || weightingAgentWeight < 0
+            ||
+            !isFinite(finalMortarVolume) || isNaN(finalMortarVolume) || finalMortarVolume < 0) {
+            res.status(400).json({
+                error: 'Некорректный результат расчёта',
+                details: {
+                    weightingAgentWeight: weightingAgentWeight,
+                    finalMortarVolume: finalMortarVolume
+                }
+            });
+            return;
+        }
+
         res.status(200).json({
-            weightingAgentWeight: weightingAgentWeight.toFixed(3),
-            finalMortarVolume: finalMortarVolume.toFixed(3)
+            weightingAgentWeight: Number(weightingAgentWeight.toFixed(3)),
+            finalMortarVolume: Number(finalMortarVolume.toFixed(3))
         });
+        return;
     }
 
     async WellVolume(req: Request, res: Response): Promise<void> {
@@ -85,13 +141,32 @@ class MortarController {
         const meters = 0.785 * (_ID ** 2 - _OD ** 2) / 10 ** 6;
         const volumeSec = 0.785 * _ID ** 2 * _Lsec / 10 ** 3;
 
+        if (!isFinite(liters) || isNaN(liters) || liters < 0
+            ||
+            !isFinite(meters) || isNaN(meters) || meters < 0
+            ||
+            !isFinite(volumeSec) || isNaN(volumeSec) || volumeSec < 0) {
+            res.status(400).json({
+                error: 'Некорректный результат расчёта',
+                details: {
+                    capacity: {
+                        liters: Number(liters),
+                        meters: Number(meters)
+                    },
+                    volumeSec: Number(volumeSec)
+                }
+            });
+            return;
+        }
+
         res.status(200).json({
             capacity: {
-                liters: liters,
-                meters: meters
+                liters: Number(liters),
+                meters: Number(meters)
             },
-            volumeSec: volumeSec
+            volumeSec: Number(volumeSec)
         });
+        return;
     }
 }
 

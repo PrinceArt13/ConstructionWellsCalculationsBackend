@@ -23,6 +23,7 @@ class dbController {
             latex: b
             //latex: method!.latex
         });
+        return;
     }
 }
 

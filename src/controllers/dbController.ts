@@ -8,6 +8,7 @@ class dbController {
         res.status(200).json({
             constants
         });
+        return;
     }
 }
 

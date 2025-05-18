@@ -76,6 +76,22 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Wrong data or calculation mistake",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "description": "Текст ошибки" },
+                    "details": {
+                      "data":"..."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -133,6 +149,22 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Wrong data or calculation mistake",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "description": "Текст ошибки" },
+                    "details": {
+                      "data":"..."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -181,6 +213,22 @@
                     "finalMortarVolume": {
                       "type": "number",
                       "description": "Конечный объём раствора (м<sup>3</sup>)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong data or calculation mistake",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "description": "Текст ошибки" },
+                    "details": {
+                      "data":"..."
                     }
                   }
                 }
@@ -243,6 +291,22 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Wrong data or calculation mistake",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "description": "Текст ошибки" },
+                    "details": {
+                      "data":"..."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -300,6 +364,22 @@
                     "volumeSec": {
                       "type": "number",
                       "description": "Объём секции (м<sup>3</sup>)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong data or calculation mistake",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "description": "Текст ошибки" },
+                    "details": {
+                      "data":"..."
                     }
                   }
                 }
@@ -489,6 +569,22 @@
             }
           }
         }
+      },
+      "400": {
+        "description": "Wrong data or calculation mistake",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": { "type": "string", "description": "Текст ошибки" },
+                "details": {
+                  "data":"..."
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -575,6 +671,22 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Wrong data or calculation mistake",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "description": "Текст ошибки" },
+                    "details": {
+                      "data":"..."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       } 
@@ -652,6 +764,22 @@
                     "salesVolume": {
                       "type": "number",
                       "description": "Объём продавки, требующийся для размещения моста (барр)"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong data or calculation mistake",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "description": "Текст ошибки" },
+                    "details": {
+                      "data":"..."
                     }
                   }
                 }
@@ -767,8 +895,8 @@
                 }
               }
             }
-        }
-      }
+                }
+              }
     }
   }
 }
